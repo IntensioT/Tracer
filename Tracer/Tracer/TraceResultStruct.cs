@@ -9,8 +9,9 @@ namespace Tracer
 {
     public struct TraceResultStruct
     {
-        public int id;
-        public int time;
-        public ConcurrentDictionary<int, MethodStruct> methodsDict;
+        public int Id;
+        public double Time;
+        public Dictionary<string,MethodStruct> Methods;
+        //public ConcurrentDictionary<int, MethodStruct> MethodsDict;
     }
 }

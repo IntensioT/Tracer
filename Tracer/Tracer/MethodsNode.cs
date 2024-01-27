@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,30 +10,33 @@ namespace Tracer
 {
     public class MethodNode
     {
-        public string name;
-        public string classStr;
-        public double time;
-
+        private MethodStruct _methodStruct;
         private Stopwatch _stopwatch;
-        private MethodNode _headMethod;
-        private List<MethodNode> _internalMethods;
 
-        public MethodNode(string name, string classStr, MethodNode headMethod)
-        {
-            this.name = name;
-            this.classStr = classStr;
-            this._headMethod = headMethod;
-        }
+        public MethodStruct GetMethodStruct { get { return _methodStruct; } }
+
+        
+
 
         public void StartStopwatch()
         {
             _stopwatch = Stopwatch.StartNew();
         }
 
-        public void StopWatch()
+        public void StopStopwatch()
         {
             TimeSpan elapsedTime = _stopwatch.Elapsed;
-            time = elapsedTime.TotalMilliseconds;
+            _methodStruct.Time = elapsedTime.TotalMilliseconds;
+        }
+
+        public MethodNode(string methodName, string className)
+        {
+            StackTrace stackTrace = new StackTrace();
+            //_methodStruct.Name = GetCallingMethodName();
+            _methodStruct.Name = methodName;
+            //_methodStruct.ClassName = GetCallingClassName();
+            _methodStruct.ClassName = className;
+            _methodStruct.MethodDepth = stackTrace.FrameCount - 2;
         }
     }
 }

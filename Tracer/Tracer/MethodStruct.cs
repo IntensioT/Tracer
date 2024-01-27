@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    internal class MethodStruct
+    public struct MethodStruct
     {
+        public string Name;
+        public string ClassName;
+        public double Time;
+        public int MethodDepth;
     }
 }

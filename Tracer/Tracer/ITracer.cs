@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Tracer
 {
-    internal interface ITracer
+    public interface ITracer
     {
-
         // вызывается в начале замеряемого метода
-        void StartTrace();​
-    
-       // вызывается в конце замеряемого метода 
-        void StopTrace();​
-    
-    // получить результаты измерений  
+        void StartTrace();
+
+        // вызывается в конце замеряемого метода
+        void StopTrace();
+
+        // получить результаты измерений
         TraceResultStruct GetTraceResult();
     }
 }
+    
