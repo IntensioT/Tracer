@@ -11,7 +11,7 @@ namespace Tracer
     {
         public int Id;
         public double Time;
-        public Dictionary<string,MethodStruct> Methods;
+        public List<MethodNode> Methods;
         //public ConcurrentDictionary<int, MethodStruct> MethodsDict;
     }
 }

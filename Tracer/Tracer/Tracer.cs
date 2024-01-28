@@ -17,6 +17,7 @@ namespace Tracer
     */
     public class Tracer : ITracer
     {
+        private int _currentListPointer;
         private TraceResultStruct _traceResultStruct;
         private MethodNode _method;
 
@@ -26,56 +27,16 @@ namespace Tracer
         {
             foreach (var method in _traceResultStruct.Methods)
             {
-                _traceResultStruct.Time += method.Value.Time;
+                _traceResultStruct.Time += method.GetMethodStruct.Time;
             }
         }
-
-        private string GetCallingMethodName()
-        {
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-
-            int skipFrames = 1;
-
-            // Получаем вызывающий метод, пропуская методы внутри библиотеки Tracer
-            for (int i = skipFrames; i < stackFrames.Length; i++)
-            {
-                MethodBase method = stackFrames[i].GetMethod();
-                if (method.DeclaringType != typeof(Tracer))
-                {
-                    return method.Name;
-                }
-            }
-
-            return string.Empty; // Если вызывающий метод не найден
-        }
-
-        private static string GetCallingClassName()
-        {
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-
-            // Пропускаем методы внутри библиотеки Tracer и метод GetCallingClassName()
-            int skipFrames = 1;
-
-            // Получаем вызывающий класс, пропуская методы внутри библиотеки Tracer и метод GetCallingClassName()
-            for (int i = skipFrames; i < stackFrames.Length; i++)
-            {
-                MethodBase method = stackFrames[i].GetMethod();
-                Type declaringType = method.DeclaringType;
-                if (declaringType != typeof(Tracer))
-                {
-                    return declaringType.Name;
-                }
-            }
-
-            return string.Empty; // Если вызывающий класс не найден
-        }
+        
 
         public Tracer() 
         {
+            _currentListPointer = -1;
             _traceResultStruct.Id = Thread.CurrentThread.ManagedThreadId;
-            _traceResultStruct.Methods = new Dictionary<string,MethodStruct>();
+            _traceResultStruct.Methods = new List<MethodNode>();
             if (_tracersDict == null)
             {
                 _tracersDict = new ConcurrentDictionary<int, TraceResultStruct>();
@@ -84,27 +45,31 @@ namespace Tracer
 
         public void StartTrace()
         {
-            string methodName = GetCallingMethodName();
-            _method = new MethodNode(methodName, GetCallingClassName());
+            _method = new MethodNode();
             _method.StartStopwatch();
-            _traceResultStruct.Methods.Add(methodName, _method.GetMethodStruct);
+            _traceResultStruct.Methods.Add(_method);
+            _currentListPointer++;
         }
 
         public void StopTrace()
         {
-            _method.StopStopwatch();
 
-            string methodName = GetCallingMethodName();
-            //MethodStruct method = _traceResultStruct.Methods.FirstOrDefault(MethodStruct =>  MethodStruct.Name == methodName);
-            //method = _method.GetMethodStruct;
+            if (_currentListPointer > -1)
+            {
+                _method = _traceResultStruct.Methods[_currentListPointer--];
+                _method.StopStopwatch();
 
-            _traceResultStruct.Methods[methodName] = _method.GetMethodStruct;
-
-
-            //_traceResultStruct.Methods.Add(_method.GetMethodStruct);
+                //_traceResultStruct.Methods[_currentListPointer--] = _method.GetMethodStruct.Time;
+            }
+            else
+            { 
+                //exception}
+            }
+            
         }
         public TraceResultStruct GetTraceResult()
         {
+            CountTotalTime();
             _tracersDict.AddOrUpdate(_traceResultStruct.Id, _traceResultStruct, (key, existingValue) => _traceResultStruct);
             return _traceResultStruct;
         }
