@@ -14,6 +14,7 @@ namespace Tracer
         private Stopwatch _stopwatch;
 
         public MethodStruct GetMethodStruct { get { return _methodStruct; } }
+        public List<MethodNode> internalMethodStructs;
 
         private (string,string) GetCallingMethodNameAndClassName()
         {
@@ -35,28 +36,6 @@ namespace Tracer
             return (string.Empty,string.Empty); // Если вызывающий метод не найден
         }
 
-        private static string GetCallingClassName()
-        {
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-
-            // Пропускаем методы внутри библиотеки Tracer и метод GetCallingClassName()
-            int skipFrames = 2;
-
-            // Получаем вызывающий класс, пропуская методы внутри библиотеки Tracer и метод GetCallingClassName()
-            for (int i = skipFrames; i < stackFrames.Length; i++)
-            {
-                MethodBase method = stackFrames[i].GetMethod();
-                Type declaringType = method.DeclaringType;
-                if (declaringType != typeof(Tracer))
-                {
-                    return declaringType.Name;
-                }
-            }
-
-            return string.Empty; // Если вызывающий класс не найден
-        }
-
 
         public void StartStopwatch()
         {
@@ -71,6 +50,7 @@ namespace Tracer
 
         public MethodNode()
         {
+            internalMethodStructs = new List<MethodNode>();
             StackTrace stackTrace = new StackTrace();
             (string, string) res = GetCallingMethodNameAndClassName();
 

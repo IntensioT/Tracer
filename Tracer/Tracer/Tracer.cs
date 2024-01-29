@@ -17,9 +17,11 @@ namespace Tracer
     */
     public class Tracer : ITracer
     {
-        private int _currentListPointer;
+        
         private TraceResultStruct _traceResultStruct;
         private MethodNode _method;
+        private MethodNode _prevMethod;
+        private int _currentMethodDepth;
 
         private static ConcurrentDictionary<int, TraceResultStruct> _tracersDict;
 
@@ -30,11 +32,51 @@ namespace Tracer
                 _traceResultStruct.Time += method.GetMethodStruct.Time;
             }
         }
-        
 
-        public Tracer() 
+        public void StartTrace()
         {
-            _currentListPointer = -1;
+            _prevMethod = _method;
+            _method = new MethodNode();
+
+            int prevMethodDepth = _prevMethod?.GetMethodStruct.MethodDepth ?? -1;
+            _currentMethodDepth = _method.GetMethodStruct.MethodDepth;
+
+            switch (prevMethodDepth)
+            {
+                case var depth when depth == -1:
+                    _traceResultStruct.Methods.Add(_method);
+                    break;
+                case var depth when depth == (_currentMethodDepth - 1):
+                    _prevMethod.internalMethodStructs.Add(_method);
+                    break;
+                default:
+                    _traceResultStruct.Methods.Add(_method);
+                    break;
+            }
+
+            _method.StartStopwatch();
+        }
+
+        public void StopTrace()
+        {
+            _method.StopStopwatch();
+            _currentMethodDepth--;
+        }
+        public TraceResultStruct GetTraceResult()
+        {
+            CountTotalTime();
+            _tracersDict.AddOrUpdate(_traceResultStruct.Id, _traceResultStruct, (key, existingValue) => _traceResultStruct);
+            return _traceResultStruct;
+        }
+
+        public ConcurrentDictionary<int, TraceResultStruct> GetThreadDictionary()
+        {
+            GetTraceResult();
+            return _tracersDict;
+        }
+
+        public Tracer()
+        {
             _traceResultStruct.Id = Thread.CurrentThread.ManagedThreadId;
             _traceResultStruct.Methods = new List<MethodNode>();
             if (_tracersDict == null)
@@ -43,36 +85,6 @@ namespace Tracer
             }
         }
 
-        public void StartTrace()
-        {
-            _method = new MethodNode();
-            _method.StartStopwatch();
-            _traceResultStruct.Methods.Add(_method);
-            _currentListPointer++;
-        }
-
-        public void StopTrace()
-        {
-
-            if (_currentListPointer > -1)
-            {
-                _method = _traceResultStruct.Methods[_currentListPointer--];
-                _method.StopStopwatch();
-
-                //_traceResultStruct.Methods[_currentListPointer--] = _method.GetMethodStruct.Time;
-            }
-            else
-            { 
-                //exception}
-            }
-            
-        }
-        public TraceResultStruct GetTraceResult()
-        {
-            CountTotalTime();
-            _tracersDict.AddOrUpdate(_traceResultStruct.Id, _traceResultStruct, (key, existingValue) => _traceResultStruct);
-            return _traceResultStruct;
-        }
         public void Dispose()
         {
             //Some dispose
