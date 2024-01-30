@@ -31,8 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,12 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITracer.cs" />
-    <Compile Include="MethodsNode.cs" />
-    <Compile Include="MethodStruct.cs" />
+    <Compile Include="ResultOutput\ConsoleResultWriter.cs" />
+    <Compile Include="Serialization\ISerializable.cs" />
+    <Compile Include="Serialization\XMLTraceResultSerializer.cs" />
+    <Compile Include="Tracer\ITracer.cs" />
+    <Compile Include="ResultOutput\IResultWritable.cs" />
+    <Compile Include="Serialization\JsonTraceResultSerializer.cs" />
+    <Compile Include="Tracer\MethodsNode.cs" />
+    <Compile Include="InformationFormat\MethodStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tracer.cs" />
-    <Compile Include="TraceResultStruct.cs" />
+    <Compile Include="Tracer\Tracer.cs" />
+    <Compile Include="InformationFormat\TraceResultStruct.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages\packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

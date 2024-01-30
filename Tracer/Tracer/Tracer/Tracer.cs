@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Tracer.Serialization;
 
 namespace Tracer
 {
@@ -37,8 +39,9 @@ namespace Tracer
         {
             _prevMethod = _method;
             _method = new MethodNode();
+            _method.parentMethod = _prevMethod;
 
-            int prevMethodDepth = _prevMethod?.GetMethodStruct.MethodDepth ?? -1;
+            int prevMethodDepth = _prevMethod?.GetMethodStruct.MethodDepth ?? -1; //conditional access and null ??
             _currentMethodDepth = _method.GetMethodStruct.MethodDepth;
 
             switch (prevMethodDepth)
@@ -47,7 +50,7 @@ namespace Tracer
                     _traceResultStruct.Methods.Add(_method);
                     break;
                 case var depth when depth == (_currentMethodDepth - 1):
-                    _prevMethod.internalMethodStructs.Add(_method);
+                    _prevMethod.GetMethodStruct.internalMethodStructs.Add(_method);
                     break;
                 default:
                     _traceResultStruct.Methods.Add(_method);
@@ -60,7 +63,28 @@ namespace Tracer
         public void StopTrace()
         {
             _method.StopStopwatch();
-            _currentMethodDepth--;
+
+            
+
+            if (_prevMethod == _method)
+            {
+                if(_prevMethod.parentMethod != null)
+                {
+                    _method = _prevMethod.parentMethod;
+                }
+            }
+            else
+            {
+                if (_method.GetMethodStruct.MethodDepth == 0)
+                {
+                    _prevMethod = _method;
+                }
+                else
+                {
+                    _method = _prevMethod;
+                }
+            }
+
         }
         public TraceResultStruct GetTraceResult()
         {
@@ -73,6 +97,25 @@ namespace Tracer
         {
             GetTraceResult();
             return _tracersDict;
+        }
+
+        public string GetJSON()
+        {
+            JsonTraceResultSerializer serializer = new JsonTraceResultSerializer();
+            return serializer.Serialize(GetTraceResult());
+        }
+
+        public string GetXML()
+        {
+            XMLTraceResultSerializer serializer = new XMLTraceResultSerializer();
+            return serializer.Serialize(GetTraceResult());
+        }
+
+        public void ConsoleResult()
+        {
+            IResultWritable writer = new ConsoleResultWriter();
+            writer.WriteResult(GetJSON());
+            writer.WriteResult(GetXML());
         }
 
         public Tracer()

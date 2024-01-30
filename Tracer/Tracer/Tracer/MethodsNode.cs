@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Tracer
 {
@@ -13,8 +15,15 @@ namespace Tracer
         private MethodStruct _methodStruct;
         private Stopwatch _stopwatch;
 
+        [JsonProperty(PropertyName = "method properties")]
         public MethodStruct GetMethodStruct { get { return _methodStruct; } }
-        public List<MethodNode> internalMethodStructs;
+
+        //[JsonIgnore]
+        //public List<MethodNode> internalMethodStructs;
+
+        [JsonIgnore]
+        [XmlIgnore]
+        public MethodNode parentMethod;
 
         private (string,string) GetCallingMethodNameAndClassName()
         {
@@ -50,7 +59,7 @@ namespace Tracer
 
         public MethodNode()
         {
-            internalMethodStructs = new List<MethodNode>();
+            _methodStruct.internalMethodStructs= new List<MethodNode>();
             StackTrace stackTrace = new StackTrace();
             (string, string) res = GetCallingMethodNameAndClassName();
 
@@ -58,7 +67,7 @@ namespace Tracer
             //_methodStruct.Name = methodName;
             //_methodStruct.ClassName = GetCallingClassName();
             _methodStruct.ClassName = res.Item2;
-            _methodStruct.MethodDepth = stackTrace.FrameCount - 2;
+            _methodStruct.MethodDepth = stackTrace.FrameCount - 4;
         }
     }
 }
