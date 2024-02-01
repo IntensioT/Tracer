@@ -18,14 +18,13 @@ namespace Tracer
         [JsonProperty(PropertyName = "method properties")]
         public MethodStruct GetMethodStruct { get { return _methodStruct; } }
 
+        [JsonIgnore]
         [XmlElement("methodProperties")]
         public MethodStruct MethodStructField
         {
             get { return _methodStruct; }
             set { _methodStruct = value; }
         }
-        //[JsonIgnore]
-        //public List<MethodNode> internalMethodStructs;
 
         [JsonIgnore]
         [XmlIgnore]

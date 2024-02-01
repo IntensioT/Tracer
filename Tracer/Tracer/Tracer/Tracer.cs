@@ -20,7 +20,7 @@ namespace Tracer
     */
     public class Tracer : ITracer
     {
-        
+
         private TraceResultStruct _traceResultStruct;
         private MethodNode _method;
         private MethodNode _prevMethod;
@@ -30,22 +30,23 @@ namespace Tracer
 
         private void CountTotalTime()
         {
+            _traceResultStruct.Time = 0;
             foreach (var method in _traceResultStruct.Methods)
             {
                 _traceResultStruct.Time += method.GetMethodStruct.Time;
             }
         }
 
-        private string GetJSON()
+        private string GetJSON(TraceResultStruct result)
         {
             JsonTraceResultSerializer serializer = new JsonTraceResultSerializer();
-            return serializer.Serialize(GetTraceResult());
+            return serializer.Serialize(result);
         }
 
-        private string GetXML()
+        private string GetXML(TraceResultStruct result)
         {
             XMLTraceResultSerializer serializer = new XMLTraceResultSerializer();
-            return serializer.Serialize(GetTraceResult());
+            return serializer.Serialize(result);
         }
 
         public void StartTrace()
@@ -77,11 +78,11 @@ namespace Tracer
         {
             _method.StopStopwatch();
 
-            
+
 
             if (_prevMethod == _method)
             {
-                if(_prevMethod.parentMethod != null)
+                if (_prevMethod.parentMethod != null)
                 {
                     _method = _prevMethod.parentMethod;
                 }
@@ -101,40 +102,45 @@ namespace Tracer
         }
         public TraceResultStruct GetTraceResult()
         {
-            if(_traceResultStruct.Time == 0)
-            {
-                CountTotalTime();
-            }
+            CountTotalTime();
+
             _tracersDict.AddOrUpdate(_traceResultStruct.Id, _traceResultStruct, (key, existingValue) => _traceResultStruct);
             return _traceResultStruct;
         }
 
-        public ConcurrentDictionary<int, TraceResultStruct> GetThreadDictionary()
+        public void GetMultiThreadResult(string filePath1, string filePath2)
         {
-            GetTraceResult();
-            return _tracersDict;
+            string json = string.Empty;
+            string xml = string.Empty;
+            foreach(var thread in _tracersDict)
+            {
+                json += GetJSON(thread.Value);
+                xml += GetXML(thread.Value);
+            }
+            ConsoleResult(json, xml);
+            FileOutputResult(filePath1, filePath2, json, xml);
         }
-        
 
-        public void ConsoleResult()
+
+        public void ConsoleResult(string resJSON,string resXML)
         {
             IResultWritable writer = new ConsoleResultWriter();
-            writer.WriteResult(GetJSON());
-            writer.WriteResult(GetXML());
+            writer.WriteResult(resJSON);
+            writer.WriteResult(resXML);
         }
 
-        public void FileOutputResult()
+        public void FileOutputResult(string filePath1, string filePath2, string resJSON, string resXML)
         {
-            IResultWritable writer = new FileResultWriter("..//..//..//outputJSON.txt");
-            writer.WriteResult(GetJSON());
-            writer = new FileResultWriter("..//..//..//outputXML.txt");
-            writer.WriteResult(GetXML());
+            IResultWritable writer = new FileResultWriter(filePath1);
+            writer.WriteResult(resJSON);
+            writer = new FileResultWriter(filePath2);
+            writer.WriteResult(resXML);
         }
-        
 
-        public Tracer()
+
+        public Tracer(int threadID)
         {
-            _traceResultStruct.Id = Thread.CurrentThread.ManagedThreadId;
+            _traceResultStruct.Id = threadID;
             _traceResultStruct.Methods = new List<MethodNode>();
             if (_tracersDict == null)
             {

@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="utf-16"?>
-<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<Id>1</Id>
-	<Time>0.4091</Time>
+<root id="1" time="260.3029">
 	<Methods>
-		<MethodNode />
+		<MethodNode>
+			<methodProperties name="MyMethod" class="Foo" time="260.3029">
+				<methods>
+					<methodProperties name="InnerMethod" class="Bar" time="108.7002" />
+				</methods>
+			</methodProperties>
+		</MethodNode>
+	</Methods>
+</root><?xml version="1.0" encoding="utf-16"?>
+<root id="7" time="571.6308">
+	<Methods>
+		<MethodNode>
+			<methodProperties name="MyMethod" class="Foo" time="260.2384">
+				<methods>
+					<methodProperties name="InnerMethod" class="Bar" time="108.6223" />
+				</methods>
+			</methodProperties>
+		</MethodNode>
+		<MethodNode>
+			<methodProperties name="MySecondMethod" class="Foo" time="311.3924">
+				<methods>
+					<methodProperties name="InnerMethod" class="Bar" time="107.8055" />
+				</methods>
+			</methodProperties>
+		</MethodNode>
+	</Methods>
+</root><?xml version="1.0" encoding="utf-16"?>
+<root id="8" time="371.0368">
+	<Methods>
+		<MethodNode>
+			<methodProperties name="MyMethod" class="Foo" time="260.2748">
+				<methods>
+					<methodProperties name="InnerMethod" class="Bar" time="108.6898" />
+				</methods>
+			</methodProperties>
+		</MethodNode>
+		<MethodNode>
+			<methodProperties name="InnerMethod" class="Bar" time="110.762" />
+		</MethodNode>
 	</Methods>
 </root>
