@@ -13,7 +13,7 @@ namespace Tracer.Serialization
     {
         public string Serialize(TraceResultStruct result)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(TraceResultStruct));
+            var xmlSerializer = new XmlSerializer(typeof(TraceResultStruct));
 
             var settings = new XmlWriterSettings()
             {
@@ -25,7 +25,10 @@ namespace Tracer.Serialization
             {
                 using (var writer = XmlWriter.Create(textWriter, settings))
                 {
-                    xmlSerializer.Serialize(writer, result);
+                    var namespaces = new XmlSerializerNamespaces();
+                    namespaces.Add(string.Empty, string.Empty); // Исключаем все пространства имен
+
+                    xmlSerializer.Serialize(writer, result, namespaces);
                 }
                 return textWriter.ToString();
             }

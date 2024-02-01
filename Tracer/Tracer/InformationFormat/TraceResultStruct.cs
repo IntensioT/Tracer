@@ -11,7 +11,9 @@ namespace Tracer
     [XmlRoot(ElementName = "root")]
     public struct TraceResultStruct
     {
+        [XmlAttribute("id")]
         public int Id;
+        [XmlAttribute("time")]
         public double Time;
         public List<MethodNode> Methods;
     }
