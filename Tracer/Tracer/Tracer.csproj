@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ResultOutput\ConsoleResultWriter.cs" />
+    <Compile Include="ResultOutput\FileResultWriter.cs" />
     <Compile Include="Serialization\ISerializable.cs" />
     <Compile Include="Serialization\XMLTraceResultSerializer.cs" />
     <Compile Include="Tracer\ITracer.cs" />

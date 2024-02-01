@@ -25,6 +25,7 @@ namespace LibDemonstration
             myObject.MethodA();
 
             tracer.ConsoleResult();
+            tracer.FileOutputResult();
 
         }
         

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Tracer.ResultOutput;
 using Tracer.Serialization;
 
 namespace Tracer
@@ -33,6 +34,18 @@ namespace Tracer
             {
                 _traceResultStruct.Time += method.GetMethodStruct.Time;
             }
+        }
+
+        private string GetJSON()
+        {
+            JsonTraceResultSerializer serializer = new JsonTraceResultSerializer();
+            return serializer.Serialize(GetTraceResult());
+        }
+
+        private string GetXML()
+        {
+            XMLTraceResultSerializer serializer = new XMLTraceResultSerializer();
+            return serializer.Serialize(GetTraceResult());
         }
 
         public void StartTrace()
@@ -88,7 +101,10 @@ namespace Tracer
         }
         public TraceResultStruct GetTraceResult()
         {
-            CountTotalTime();
+            if(_traceResultStruct.Time == 0)
+            {
+                CountTotalTime();
+            }
             _tracersDict.AddOrUpdate(_traceResultStruct.Id, _traceResultStruct, (key, existingValue) => _traceResultStruct);
             return _traceResultStruct;
         }
@@ -98,18 +114,7 @@ namespace Tracer
             GetTraceResult();
             return _tracersDict;
         }
-
-        public string GetJSON()
-        {
-            JsonTraceResultSerializer serializer = new JsonTraceResultSerializer();
-            return serializer.Serialize(GetTraceResult());
-        }
-
-        public string GetXML()
-        {
-            XMLTraceResultSerializer serializer = new XMLTraceResultSerializer();
-            return serializer.Serialize(GetTraceResult());
-        }
+        
 
         public void ConsoleResult()
         {
@@ -117,6 +122,15 @@ namespace Tracer
             writer.WriteResult(GetJSON());
             writer.WriteResult(GetXML());
         }
+
+        public void FileOutputResult()
+        {
+            IResultWritable writer = new FileResultWriter("..//..//..//outputJSON.txt");
+            writer.WriteResult(GetJSON());
+            writer = new FileResultWriter("..//..//..//outputXML.txt");
+            writer.WriteResult(GetXML());
+        }
+        
 
         public Tracer()
         {

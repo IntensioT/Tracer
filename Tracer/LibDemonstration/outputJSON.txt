@@ -1,0 +1,40 @@
+{
+  "Id": 1,
+  "Time": 0.4091,
+  "Methods": [
+    {
+      "method properties": {
+        "Name": "MethodA",
+        "ClassName": "MyClass",
+        "Time": 0.4091,
+        "methods": [
+          {
+            "method properties": {
+              "Name": "MethodB",
+              "ClassName": "MyClass",
+              "Time": 0.1921,
+              "methods": []
+            }
+          },
+          {
+            "method properties": {
+              "Name": "MethodC",
+              "ClassName": "MyClass",
+              "Time": 0.065,
+              "methods": [
+                {
+                  "method properties": {
+                    "Name": "MethodD",
+                    "ClassName": "MyClass",
+                    "Time": 0.0019,
+                    "methods": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
