@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-16"?>
-<root id="1" time="260.3029">
+<root id="1" time="261.7311">
 	<Methods>
 		<MethodNode>
-			<methodProperties name="MyMethod" class="Foo" time="260.3029">
+			<methodProperties name="MyMethod" class="Foo" time="261.7311">
 				<methods>
-					<methodProperties name="InnerMethod" class="Bar" time="108.7002" />
+					<methodProperties name="InnerMethod" class="Bar" time="108.6385" />
 				</methods>
 			</methodProperties>
 		</MethodNode>
 	</Methods>
 </root><?xml version="1.0" encoding="utf-16"?>
-<root id="7" time="571.6308">
+<root id="7" time="571.2105">
 	<Methods>
 		<MethodNode>
-			<methodProperties name="MyMethod" class="Foo" time="260.2384">
+			<methodProperties name="MyMethod" class="Foo" time="261.7354">
 				<methods>
-					<methodProperties name="InnerMethod" class="Bar" time="108.6223" />
+					<methodProperties name="InnerMethod" class="Bar" time="108.5978" />
 				</methods>
 			</methodProperties>
 		</MethodNode>
 		<MethodNode>
-			<methodProperties name="MySecondMethod" class="Foo" time="311.3924">
+			<methodProperties name="MySecondMethod" class="Foo" time="309.4751">
 				<methods>
-					<methodProperties name="InnerMethod" class="Bar" time="107.8055" />
+					<methodProperties name="InnerMethod" class="Bar" time="107.927" />
 				</methods>
 			</methodProperties>
 		</MethodNode>
 	</Methods>
 </root><?xml version="1.0" encoding="utf-16"?>
-<root id="8" time="371.0368">
+<root id="8" time="369.4491">
 	<Methods>
 		<MethodNode>
-			<methodProperties name="MyMethod" class="Foo" time="260.2748">
+			<methodProperties name="MyMethod" class="Foo" time="261.7498">
 				<methods>
-					<methodProperties name="InnerMethod" class="Bar" time="108.6898" />
+					<methodProperties name="InnerMethod" class="Bar" time="108.5744" />
 				</methods>
 			</methodProperties>
 		</MethodNode>
 		<MethodNode>
-			<methodProperties name="InnerMethod" class="Bar" time="110.762" />
+			<methodProperties name="InnerMethod" class="Bar" time="107.6993" />
 		</MethodNode>
 	</Methods>
 </root>

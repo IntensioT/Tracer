@@ -1,18 +1,18 @@
 {
   "Id": 1,
-  "Time": 260.3029,
+  "Time": 261.7311,
   "Methods": [
     {
       "method properties": {
         "Name": "MyMethod",
         "ClassName": "Foo",
-        "Time": 260.3029,
+        "Time": 261.7311,
         "methods": [
           {
             "method properties": {
               "Name": "InnerMethod",
               "ClassName": "Bar",
-              "Time": 108.7002,
+              "Time": 108.6385,
               "methods": []
             }
           }
@@ -22,19 +22,19 @@
   ]
 }{
   "Id": 7,
-  "Time": 571.6308,
+  "Time": 571.2105,
   "Methods": [
     {
       "method properties": {
         "Name": "MyMethod",
         "ClassName": "Foo",
-        "Time": 260.2384,
+        "Time": 261.7354,
         "methods": [
           {
             "method properties": {
               "Name": "InnerMethod",
               "ClassName": "Bar",
-              "Time": 108.6223,
+              "Time": 108.5978,
               "methods": []
             }
           }
@@ -45,13 +45,13 @@
       "method properties": {
         "Name": "MySecondMethod",
         "ClassName": "Foo",
-        "Time": 311.3924,
+        "Time": 309.4751,
         "methods": [
           {
             "method properties": {
               "Name": "InnerMethod",
               "ClassName": "Bar",
-              "Time": 107.8055,
+              "Time": 107.927,
               "methods": []
             }
           }
@@ -61,19 +61,19 @@
   ]
 }{
   "Id": 8,
-  "Time": 371.0368,
+  "Time": 369.4491,
   "Methods": [
     {
       "method properties": {
         "Name": "MyMethod",
         "ClassName": "Foo",
-        "Time": 260.2748,
+        "Time": 261.7498,
         "methods": [
           {
             "method properties": {
               "Name": "InnerMethod",
               "ClassName": "Bar",
-              "Time": 108.6898,
+              "Time": 108.5744,
               "methods": []
             }
           }
@@ -84,7 +84,7 @@
       "method properties": {
         "Name": "InnerMethod",
         "ClassName": "Bar",
-        "Time": 110.762,
+        "Time": 107.6993,
         "methods": []
       }
     }
